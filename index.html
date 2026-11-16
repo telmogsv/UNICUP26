@@ -238,7 +238,7 @@ tbody td:nth-child(2){text-align:left;font-weight:500}
         <tbody></tbody>
       </table>
     </div>
-    <div class="live-status" id="live-status"></div>
+    <div class="live-status" id="live-status">Connecting to Google Sheets...</div>
     <p style="font-size:11px;color:var(--muted);margin-top:6px">Green border = top 4 qualify for semi-finals &nbsp;|&nbsp; Red border = eliminated</p>
   </section>
 
@@ -372,12 +372,20 @@ document.getElementById('header-logo').src = 'data:image/png;base64,iVBORw0KGgoA
 // ════════════════════════════════════════════════════
 const SID = '1rK2nZiWCQHHQIzYSaWzrp7O_UopeChCFv-u6osD8W48';
 function csvUrl(sheet){ return `https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}`; }
+let lastErr='';
 async function fetchCSV(sheet){
+  const ctl=new AbortController();
+  const t=setTimeout(()=>ctl.abort(),10000);
   try{
-    const r = await fetch(csvUrl(sheet));
-    if(!r.ok) return null;
-    return parseCSV(await r.text());
-  } catch(e){ return null; }
+    const r=await fetch(csvUrl(sheet),{signal:ctl.signal});
+    if(!r.ok){lastErr='Google answered HTTP '+r.status;return null;}
+    const txt=await r.text();
+    if(txt.trim().startsWith('<')){lastErr='the sheet is not shared publicly (Google returned a sign-in page)';return null;}
+    return parseCSV(txt);
+  }catch(e){
+    lastErr=e.name==='AbortError'?'the request timed out':'the browser blocked the request ('+e.message+')';
+    return null;
+  }finally{clearTimeout(t);}
 }
 function parseCSV(text){
   const rows=[];
@@ -1040,6 +1048,7 @@ function parsePlayers(rows){
 
 async function fetchLiveData(){
   const status=document.getElementById('live-status');
+  if(status&&!status.textContent) status.textContent='Connecting to Google Sheets...';
   try{
     const [home,players]=await Promise.all([fetchCSV('UNICUP26'),fetchCSV('Players')]);
     let any=false;
@@ -1049,10 +1058,12 @@ async function fetchLiveData(){
       renderAll();
       if(status) status.textContent='Live from Google Sheets. Last updated '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+'. Refreshes every minute.';
     } else if(status){
-      status.textContent='Showing saved data. Could not reach Google Sheets.';
+      status.textContent=(home||players)
+        ? 'Showing saved data. Connected to Google Sheets but could not read the sheet layout.'
+        : 'Showing saved data. Could not read Google Sheets: '+lastErr+'.';
     }
   } catch(e){
-    if(status) status.textContent='Showing saved data. Could not reach Google Sheets.';
+    if(status) status.textContent='Showing saved data. Error: '+e.message;
   }
 }
 
