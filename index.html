@@ -238,6 +238,12 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
   .reg-card{padding:16px}
   .glory{padding:26px 14px 30px}
 }
+
+.drive-frame{width:100%;height:min(70vh,640px);border:1px solid var(--border);border-radius:12px;background:#fff;box-shadow:var(--shadow);display:block}
+.drive-open{display:inline-block;margin:0 0 14px;padding:9px 16px;border:2px solid var(--blue);border-radius:8px;color:var(--blue);font-weight:600;font-size:13px;text-decoration:none}
+.drive-open:hover{background:var(--blue);color:#fff}
+.gal-block{margin-bottom:22px}
+.gal-block h3{font-size:13px;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
 </style>
 </head>
 <body>
@@ -580,6 +586,7 @@ let PLAYERS = [
 
 MATCHES.forEach(m=>{const d=(m.date.match(/\d{2}\/\d{2}/)||[''])[0];m._tab0=d+' '+m.home+' vs '+m.away;});
 
+let FOLDERS = {};   // matchday number -> Google Drive folder id
 const MEDIA = {
   // Add YouTube URLs per matchday: md1: ['https://youtu.be/xxx']
 };
@@ -874,7 +881,7 @@ function renderFairPlay(){
 // ════════════════════════════════════════════════════
 function renderPhotos(){
   document.getElementById('md-grid').innerHTML=MATCHES.map(m=>{
-    const key='md'+m.id, has=MEDIA[key]&&MEDIA[key].length;
+    const key='md'+m.id, has=(MEDIA[key]&&MEDIA[key].length)||FOLDERS[m.id];
     return `<button class="md-btn${has?' has-media':''}" data-md="${m.id}">
       <div class="md-num">MD${m.id}</div>
       <div class="md-fix">${m.home} vs ${m.away}</div>
@@ -892,17 +899,52 @@ function openGallery(id){
   document.getElementById('gal-title').textContent=`MD${m.id}: ${m.home} vs ${m.away}`;
   document.getElementById('gal-sub').textContent=`${m.date} · ${m.stage}`;
   const media=(MEDIA['md'+id]||[]);
+  const folder=FOLDERS[id];
   const gc=document.getElementById('gal-content');
-  if(!media.length){
+  if(!media.length&&!folder){
     gc.innerHTML=`<div class="gallery-empty">No media yet for this matchday.<br><span style="font-size:12px;display:block;margin-top:6px">Follow @istunicef on Instagram for live updates.</span></div>`;
     return;
   }
-  gc.innerHTML='<div class="vid-grid">'+media.map(url=>{
-    const yt=url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{11})/);
-    return yt
-      ? `<div class="vid-box"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen loading="lazy"></iframe></div>`
-      : `<img src="${url}" style="width:100%;border-radius:10px;box-shadow:var(--shadow)">`;
-  }).join('')+'</div>';
+  let html='';
+  if(folder){
+    html+=`<div class="gal-block"><h3>Photos</h3>
+      <a class="drive-open" href="https://drive.google.com/drive/folders/${folder}" target="_blank" rel="noopener">Open the folder in Google Drive</a>
+      <iframe class="drive-frame" loading="lazy" src="https://drive.google.com/embeddedfolderview?id=${folder}#grid"></iframe></div>`;
+  }
+  if(media.length){
+    html+='<div class="gal-block"><h3>Videos</h3><div class="vid-grid">'+media.map(url=>{
+      const yt=url.match(/(?:youtu\.be\/|v=|embed\/)([A-Za-z0-9_-]{11})/);
+      return yt
+        ? `<div class="vid-box"><iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen loading="lazy"></iframe></div>`
+        : `<img src="${url}" style="width:100%;border-radius:10px;box-shadow:var(--shadow)">`;
+    }).join('')+'</div></div>';
+  }
+  gc.innerHTML=html;
+}
+
+function parseMedia(rows){
+  // Tab "Media": Matchday | Drive folder | YouTube links
+  const hi=rows.findIndex(r=>r.some(c=>/^matchday$/i.test(c))&&r.some(c=>/drive/i.test(c)));
+  if(hi<0) return false;
+  const hr=rows[hi];
+  const cM=hr.findIndex(c=>/^matchday$/i.test(c));
+  const cD=hr.findIndex(c=>/drive/i.test(c));
+  const cY=hr.findIndex(c=>/youtube|video/i.test(c));
+  const folders={}, vids={};
+  for(let k=hi+1;k<rows.length;k++){
+    const r=rows[k];
+    const n=parseInt(String(r[cM]||'').replace(/\D/g,''),10);
+    if(!n) continue;
+    const dm=String(r[cD]||'').match(/(?:folders\/|[?&]id=)([A-Za-z0-9_-]{10,})/);
+    if(dm) folders[n]=dm[1];
+    if(cY>=0&&r[cY]){
+      const list=String(r[cY]).split(/[\s,]+/).filter(u=>/^https?:/.test(u));
+      if(list.length) vids['md'+n]=list;
+    }
+  }
+  FOLDERS=folders;
+  Object.keys(vids).forEach(k=>{MEDIA[k]=vids[k];});
+  return true;
 }
 
 // ════════════════════════════════════════════════════
@@ -1212,8 +1254,9 @@ async function fetchLiveData(){
   const status=document.getElementById('live-status');
   if(status&&!status.textContent) status.textContent='Connecting to Google Sheets...';
   try{
-    const [home,players]=await Promise.all([fetchCSV('UNICUP26'),fetchCSV('Players')]);
+    const [home,players,media]=await Promise.all([fetchCSV('UNICUP26'),fetchCSV('Players'),fetchCSV('Media')]);
     let any=false;
+    if(media&&parseMedia(media)) any=true;
     if(players&&parsePlayers(players)) any=true;
     if(home&&parseHome(home)) any=true;
     if(any){
