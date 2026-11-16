@@ -207,7 +207,7 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
 /* mobile polish */
 .header-logo{height:auto;width:min(92%,780px);max-width:92%}
 .nb-short{display:none}
-.bracket-list{display:none}
+.bracket-svg-m{display:none;width:100%;aspect-ratio:346/262;height:auto}
 .b-card{background:var(--card);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px;border-left:4px solid var(--blue)}
 .b-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .b-match{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:600;font-size:15px}
@@ -227,8 +227,9 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
   .next-banner{padding:8px 10px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   nav a{padding:10px 9px;font-size:11px}
   .nav-logo{max-width:34vw;padding:4px 8px}
-  .bracket-wrap{display:none}
-  .bracket-list{display:block}
+  .bracket-svg{display:none}
+  .bracket-svg-m{display:block}
+  .bracket-wrap{padding:8px 4px}
   .md-grid{grid-template-columns:1fr 1fr;gap:8px}
   .md-btn{padding:10px}
   .md-fix{font-size:13px}
@@ -294,9 +295,9 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
   <section id="knockout">
     <h2>Knockout Bracket</h2>
     <div class="card bracket-wrap">
-      <svg class="bracket-svg" id="bracket-svg" width="680" height="340" viewBox="0 0 680 340"></svg>
+      <svg class="bracket-svg" id="bracket-svg" width="740" height="340" viewBox="0 0 740 340"></svg>
+    <svg class="bracket-svg-m" id="bracket-svg-m" viewBox="-3 0 346 262"></svg>
     </div>
-    <div class="bracket-list" id="bracket-list"></div>
   </section>
 
   <section id="regulations">
@@ -811,12 +812,31 @@ function renderBracket(){
   out+=box(c3,fY,'TBD','Winner',true);
 
   svg.innerHTML=out;
-  const bl=document.getElementById('bracket-list');
-  if(bl) bl.innerHTML=`
-    <div class="b-card"><div class="b-title">Semi-final 1 &middot; 26/11</div><div class="b-match"><span>1. ${sf1h}</span><em>vs</em><span>4. ${sf1a}</span></div></div>
-    <div class="b-card"><div class="b-title">Semi-final 2 &middot; 27/11</div><div class="b-match"><span>2. ${sf2h}</span><em>vs</em><span>3. ${sf2a}</span></div></div>
-    <div class="b-card"><div class="b-title">Bronze Final &middot; 30/11</div><div class="b-match"><span>Losers of the semi-finals</span></div></div>
-    <div class="b-card b-final"><div class="b-title">Final &middot; 01/12</div><div class="b-match"><span>Winners of the semi-finals</span></div></div>`;
+  // compact version for phones
+  const ms=document.getElementById('bracket-svg-m');
+  if(ms){
+    const W=96,H=34,x0=0,x1=122,x2=244;
+    const F="font-family=\"Roboto,sans-serif\"";
+    const bx=(x,y,t,sub,hi)=>`<rect x="${x}" y="${y}" width="${W}" height="${H}" rx="6" fill="${hi?'#1CABE2':'#f0f4f8'}" stroke="${hi?'#0097cc':'#cbd5e1'}" stroke-width="1.5"/>
+      <text x="${x+W/2}" y="${y+(sub?15:21)}" text-anchor="middle" ${F} font-size="12" font-weight="600" fill="${hi?'#fff':'#1a1a2e'}">${t}</text>
+      ${sub?`<text x="${x+W/2}" y="${y+27}" text-anchor="middle" ${F} font-size="8.5" fill="${hi?'rgba(255,255,255,0.8)':'#9ca3af'}">${sub}</text>`:''}`;
+    const hl=(xa,y,xb)=>`<line x1="${xa}" y1="${y}" x2="${xb}" y2="${y}" stroke="#cbd5e1" stroke-width="1.5"/>`;
+    const vl=(x,ya,yb)=>`<line x1="${x}" y1="${ya}" x2="${x}" y2="${yb}" stroke="#cbd5e1" stroke-width="1.5"/>`;
+    const hd=(x,t)=>`<text x="${x+W/2}" y="14" text-anchor="middle" ${F} font-size="10" font-weight="700" fill="#002F5F">${t}</text>`;
+    const s=[30,78,164,212];                    // seed box tops
+    const mid1=(s[0]+s[1]+H)/2, mid2=(s[2]+s[3]+H)/2;   // centres of each pair
+    const finalMid=(mid1+mid2)/2;
+    let o=hd(x0,'SEEDS')+hd(x1,'SEMI-FINALS')+hd(x2,'FINAL');
+    o+=bx(x0,s[0],'1. '+sf1h)+bx(x0,s[1],'4. '+sf1a)+bx(x0,s[2],'2. '+sf2h)+bx(x0,s[3],'3. '+sf2a);
+    [[s[0],s[1],mid1],[s[2],s[3],mid2]].forEach(([ya,yb,m])=>{
+      o+=hl(x0+W,ya+H/2,x0+W+13)+hl(x0+W,yb+H/2,x0+W+13)+vl(x0+W+13,ya+H/2,yb+H/2)+hl(x0+W+13,m,x1);
+    });
+    o+=bx(x1,mid1-H/2,'26/11','Semi-final 1',true)+bx(x1,mid2-H/2,'27/11','Semi-final 2',true);
+    o+=hl(x1+W,mid1,x1+W+13)+hl(x1+W,mid2,x1+W+13)+vl(x1+W+13,mid1,mid2)+hl(x1+W+13,finalMid,x2);
+    o+=bx(x2,finalMid-H/2,'01/12','Final',true);
+    o+=bx(x2,finalMid+H/2+18,'30/11','Bronze Final');
+    ms.innerHTML=o;
+  }
 }
 
 // ════════════════════════════════════════════════════
