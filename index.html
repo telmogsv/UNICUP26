@@ -501,7 +501,7 @@ let MATCHES = [
    lineup:{h:{f:'3-3-2',gk:'',       rows:[[],[],[]],bench:['Lionel Perez','Pascal Groppi','Richard Wade','Jeremy Harvey','Brad Edwards','Tiffany Dessain','Nicholas Charalambous','Samar Meriaux','Gaelle Podbury','Oliver Bowles','Samantha Orchard','Jim Noble']},
            a:{f:'3-2-3',gk:'Teo',    rows:[['Lottie','Heoyang','Oscar'],['Pablo','Luca'],['Felipe','Pepe','Deniz']],bench:['Hans','Jad','Lucas','Leonardo']}}},
   {id:4, date:'Fri 13/11',home:'G7A',  away:'G6B',  sH:14, sA:0,  played:true, stage:'1st Round',
-   scorers:{h:[],a:[]},
+   scorers:{h:['Paul','Paul','Paul','Paul','Paul','Paul','Paul','Paul','Paul','Manuel','Manuel','Alonso','Alonso','Noah'],a:[]},
    lineup:{h:{f:'3-2-3',gk:'Marc',   rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:['Lauti','Leonor','Valeria','Samanvith']},
            a:{f:'3-3-2',gk:'',       rows:[[],[],[]],bench:['Yanis','Shiying','Neelabh','Mathew','Shivanshi','Neil','Clara','Leo','Neervan']}}},
   {id:5, date:'Mon 16/11',home:'G12B', away:'G10A', sH:1,  sA:15, played:true, stage:'1st Round',
@@ -663,6 +663,11 @@ function renderStandings(){
 // ════════════════════════════════════════════════════
 // RENDER — SCHEDULE
 // ════════════════════════════════════════════════════
+function groupScorers(arr){
+  const counts={},order=[];
+  arr.forEach(n=>{if(!counts[n]){counts[n]=0;order.push(n);}counts[n]++;});
+  return order.map(n=>counts[n]>1?n+' ×'+counts[n]:n);
+}
 function renderSchedule(){
   const g=document.getElementById('sched-grid');
   const STAGES=[['1st Round','1st Round'],['2nd Round','2nd Round'],['Semi-final','Semi-finals'],['Bronze','Bronze Final'],['Final','Final']];
@@ -671,7 +676,7 @@ function renderSchedule(){
       ? `<div class="score-box">${m.sH} - ${m.sA}</div>`
       : `<div class="score-box pending">vs</div>`;
     const sc=m.played&&(m.scorers.h.length||m.scorers.a.length)
-      ? `<div class="match-scorers">${[...m.scorers.h.map(n=>n+' ('+m.home+')'),...m.scorers.a.map(n=>n+' ('+m.away+')')].join(' · ')}</div>`:'';
+      ? `<div class="match-scorers">${[...groupScorers(m.scorers.h).map(n=>n+' ('+m.home+')'),...groupScorers(m.scorers.a).map(n=>n+' ('+m.away+')')].join(' · ')}</div>`:'';
     return `<div class="match-card ${m.played?'played':'upcoming'}" data-id="${m.id}">
       <div class="match-meta">MD${m.id} · ${m.date}</div>
       <div class="match-teams">
@@ -728,7 +733,7 @@ function openDetail(id,silent){
 
   function scBlock(arr,team){
     if(!arr.length) return '';
-    return `<div class="scorer-block"><div class="scorer-label">Scorers (${team})</div>${arr.map(n=>`<div class="scorer-item">${n}</div>`).join('')}</div>`;
+    return `<div class="scorer-block"><div class="scorer-label">Scorers (${team})</div>${groupScorers(arr).map(n=>`<div class="scorer-item">${n}</div>`).join('')}</div>`;
   }
   function benchBlock(lu){
     const b = (lu.bench||[]).filter(p=>p);
