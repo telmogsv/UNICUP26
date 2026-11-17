@@ -504,11 +504,11 @@ let MATCHES = [
    scorers:{h:['Paul','Paul','Paul','Paul','Paul','Paul','Paul','Paul','Paul','Manuel','Manuel','Alonso','Alonso','Noah'],a:[]},
    lineup:{h:{f:'3-2-3',gk:'Marc',   rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:['Lauti','Leonor','Valeria','Samanvith']},
            a:{f:'3-3-2',gk:'',       rows:[[],[],[]],bench:['Yanis','Shiying','Neelabh','Mathew','Shivanshi','Neil','Clara','Leo','Neervan']}}},
-  {id:5, date:'Mon 16/11',home:'G12B', away:'G10A', sH:1,  sA:15, played:true, stage:'1st Round',
-   scorers:{h:[],a:[]},
+  {id:5, date:'Mon 16/11',home:'G12B', away:'G10A', sH:1,  sA:16, played:true, stage:'1st Round',
+   scorers:{h:['o.g.'],a:['Marcos','Guillermo','Ollie','Marcos (p)','Guillermo','Ollie','Ollie','Guillermo','Marcos','Hugo','Hugo','Guillermo','Ollie','Niels','Hugo','Hugo']},
    lineup:{h:{f:'3-3-2',gk:'Evangeline',rows:[[],[],[]],bench:['Valentina','Avanika','Elise','Gabriela','Julia','Mathilde','Maya','Milina','Nefeli','Nia','Niharika','Nora','Pihu','Sienna','Sofia C','Sofia H','Sofia M','Sophie','Aadya','Milan']},
            a:{f:'3-3-2',gk:'Pablo',   rows:[['Africa','Ellias','Errol'],['Ollie','Marcos','Guillermo'],['Hugo','Niels']],bench:['Milan']}}},
-  {id:6, date:'Tue 17/11',home:'G6A',  away:'G12A', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-2-3',gk:'Teo',rows:[['Lottie','Heoyang','Oscar'],['Pablo','Luca'],['Felipe','Pepe','Deniz']],bench:[]},a:{f:'3-3-2',gk:'Javier',rows:[[],[],[]],bench:[]}}},
+  {id:6, date:'Tue 17/11',home:'G6A',  away:'G12A', sH:0,  sA:6,  played:true, stage:'2nd Round',scorers:{h:[],a:['Alejandro','Alejandro','Alejandro','Nikola','Nikola','German']},lineup:{h:{f:'3-2-3',gk:'Teo',rows:[['Lottie','Heoyang','Oscar'],['Pablo','Luca'],['Felipe','Pepe','Deniz']],bench:[]},a:{f:'3-3-2',gk:'Javier',rows:[[],[],[]],bench:[]}}},
   {id:7, date:'Thu 19/11',home:'G10A', away:'Staff', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Pablo',rows:[['Africa','Ellias','Errol'],['Ollie','Marcos','Guillermo'],['Hugo','Niels']],bench:[]},a:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]}}},
   {id:8, date:'Fri 20/11',home:'G6B',  away:'G11A', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:['Benjamin']}}},
   {id:9, date:'Mon 23/11',home:'G8A',  away:'G12B', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Miles',rows:[['Outa','Diego','Ayushman'],['Saul','Mugil','Aaron'],['Finley','Gaspard']],bench:[]},a:{f:'3-3-2',gk:'Evangeline',rows:[[],[],[]],bench:[]}}},
@@ -520,12 +520,16 @@ let MATCHES = [
 ];
 
 let GOLDEN_BOOT = [
-  {rank:1,name:'Marco',       team:'G11A',goals:2,against:'G8A'},
-  {rank:2,name:'Alex P',      team:'G11A',goals:1,against:'G8A'},
-  {rank:2,name:'Andres',      team:'G12A',goals:1,against:'G9A'},
-  {rank:2,name:'Jeremy Harvey',team:'Staff',goals:1,against:'G6A'},
-  {rank:2,name:'Lionel Perez',team:'Staff',goals:1,against:'G6A'},
-  {rank:2,name:'Leonardo',    team:'G6A', goals:1,against:'Staff'},
+  {rank:1, name:'Paul',         team:'G7A',  goals:9, against:'G6B'},
+  {rank:2, name:'Guillermo',    team:'G10A', goals:4, against:'G12B'},
+  {rank:2, name:'Ollie',        team:'G10A', goals:4, against:'G12B'},
+  {rank:2, name:'Hugo',         team:'G10A', goals:4, against:'G12B'},
+  {rank:5, name:'Alejandro',    team:'G12A', goals:3, against:'G6A'},
+  {rank:5, name:'Marcos',       team:'G10A', goals:3, against:'G12B'},
+  {rank:7, name:'Marco',        team:'G11A', goals:2, against:'G8A'},
+  {rank:7, name:'Manuel',       team:'G7A',  goals:2, against:'G6B'},
+  {rank:7, name:'Alonso',       team:'G7A',  goals:2, against:'G6B'},
+  {rank:10,name:'Nikola',       team:'G12A', goals:2, against:'G6A'},
 ];
 
 let FAIR_PLAY = [
@@ -613,8 +617,8 @@ const MEDIA = {
 };
 
 let STATS = [
-  ['Matches played','5 / 14'],['Total goals','37'],['Goals per match','7.4'],
-  ['Biggest win','G7A 14–0 G6B'],['Highest-scoring match','G12B 1–15 G10A'],
+  ['Matches played','6 / 14'],['Total goals','43'],['Goals per match','7.2'],
+  ['Biggest win','G7A 14–0 G6B'],['Highest-scoring match','G12B 1–16 G10A'],
   ['Penalty shootouts','0'],['Yellow cards','0'],['Red cards','0'],
   ['Best attack','G10A (15 scored)'],['Best defence','G7A (0 conceded)'],
   ['Money raised','€226 / €242 (93%)']
