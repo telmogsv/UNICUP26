@@ -45,28 +45,27 @@ nav{background:var(--dark);flex:1;min-width:0}
 .reg-card li{margin:7px 0;font-size:14px;line-height:1.5}
 .reg-card ol{list-style:lower-roman;padding-left:22px;margin-top:4px}
 .reg-warn{margin-top:14px;padding:12px 14px;background:#fdecec;border-left:4px solid var(--red);border-radius:6px;font-weight:700;font-size:13px;color:var(--red);letter-spacing:.02em}
-.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;align-items:start}
+.about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;align-items:start}
 .about-dept:first-child{grid-column:1/-1}
-@media(max-width:420px){.about-grid{grid-template-columns:1fr}}
-.about-dept{background:#f4f9fd;border-radius:14px;padding:18px 14px 20px;border:1px solid #d7ebf7}
-.about-dept-title{font-size:15px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px;padding-left:10px;border-left:4px solid var(--blue)}
-.about-tier{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
-.about-link{width:2px;height:18px;background:var(--blue);margin:0 auto;opacity:.6}
-.about-card{width:135px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);text-align:center;border-top:3px solid var(--blue)}
-.about-card.lead{border-top:4px solid var(--dark);width:150px}
-.about-img{width:100%;aspect-ratio:1/1;object-fit:contain;display:block;background:#1CABE2}
-.about-info{padding:10px 8px 12px}
-.about-name{font-size:14px;font-weight:600}
-.about-role{font-size:11px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
-.about-card.goodest{position:relative;margin-top:10px;width:170px;border-top:none;background:linear-gradient(180deg,#fff8e1,#fff);box-shadow:0 0 0 3px #f5b301,0 6px 22px rgba(245,179,1,.55);animation:goodestGlow 2.4s ease-in-out infinite;overflow:visible;border-radius:12px}
-.about-card.goodest .about-img{background:linear-gradient(135deg,#ffd54f,#f5b301);border-radius:12px 12px 0 0}
+.about-dept{background:#f4f9fd;border-radius:12px;padding:12px 10px 12px;border:1px solid #d7ebf7}
+.about-dept-title{font-size:13px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px;padding-left:8px;border-left:3px solid var(--blue)}
+.about-tier{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.about-link{width:2px;height:8px;background:var(--blue);margin:0 auto;opacity:.6}
+.about-card{display:flex;align-items:center;gap:9px;width:250px;max-width:100%;background:var(--card);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);text-align:left;border-left:3px solid var(--blue);padding:6px 8px 6px 6px}
+.about-card.lead{border-left:4px solid var(--dark)}
+.about-img{flex:0 0 52px;width:52px;height:52px;object-fit:cover;border-radius:8px;display:block;background:#1CABE2}
+.about-info{min-width:0}
+.about-name{font-size:13px;font-weight:600;line-height:1.25}
+.about-role{font-size:10px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;line-height:1.3}
+.about-card.goodest{position:relative;margin-top:12px;border-left:none;background:linear-gradient(90deg,#fff3c4,#fff);box-shadow:0 0 0 2px #f5b301,0 4px 16px rgba(245,179,1,.5);animation:goodestGlow 2.4s ease-in-out infinite;overflow:visible}
+.about-card.goodest .about-img{flex-basis:60px;width:60px;height:60px;box-shadow:0 0 0 2px #f5b301}
 .about-card.goodest .about-role{color:#b47d00}
-.goodest-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(90deg,#f5b301,#ffd54f,#f5b301);color:#3a2a00;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.2);display:flex;align-items:center;gap:4px;z-index:2}
-.goodest-badge svg{width:12px;height:12px;fill:#3a2a00}
-@keyframes goodestGlow{0%,100%{box-shadow:0 0 0 3px #f5b301,0 6px 18px rgba(245,179,1,.45)}50%{box-shadow:0 0 0 3px #ffd54f,0 8px 30px rgba(245,179,1,.85)}}
+.goodest-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);white-space:nowrap;background:linear-gradient(90deg,#f5b301,#ffd54f,#f5b301);color:#3a2a00;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:999px;box-shadow:0 2px 6px rgba(0,0,0,.2);display:flex;align-items:center;gap:4px;z-index:2}
+.goodest-badge svg{width:10px;height:10px;fill:#3a2a00}
+@keyframes goodestGlow{0%,100%{box-shadow:0 0 0 2px #f5b301,0 4px 12px rgba(245,179,1,.4)}50%{box-shadow:0 0 0 2px #ffd54f,0 6px 24px rgba(245,179,1,.85)}}
 @media(prefers-reduced-motion:reduce){.about-card.goodest{animation:none}}
-.about-boss{font-size:10px;color:var(--muted);margin-top:6px}
-@media(max-width:420px){.about-card,.about-card.lead{width:calc(50% - 7px)}}
+.about-boss{font-size:9.5px;color:var(--muted);margin-top:2px}
+@media(max-width:420px){.about-grid{grid-template-columns:1fr}.about-card{width:100%}}
 .glory{background:linear-gradient(160deg,var(--dark),#001a38);border-radius:16px;padding:36px 20px 40px;text-align:center;color:#fff;box-shadow:var(--shadow);margin-bottom:0}
 .glory-top{font-size:clamp(20px,5vw,34px);font-weight:900;letter-spacing:.12em}
 .glory-name{font-size:clamp(26px,7vw,52px);font-weight:900;letter-spacing:.08em;color:var(--blue);margin:4px 0 22px}
