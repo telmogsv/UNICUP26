@@ -536,8 +536,8 @@ let MATCHES = [
   {id:8, date:'Mon 23/11',home:'G6B',  away:'G11A', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:['Benjamin']}}},
   {id:9, date:'Tue 24/11',home:'G8A',  away:'G12B', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Miles',rows:[['Outa','Diego','Ayushman'],['Saul','Mugil','Aaron'],['Finley','Gaspard']],bench:[]},a:{f:'3-3-2',gk:'Evangeline',rows:[[],[],[]],bench:[]}}},
   {id:10,date:'Thu 26/11',home:'G9A',  away:'G7A',  sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Gabriel',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
-  {id:11,date:'Fri 27/11',home:'G10A', away:'Staff', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
-  {id:12,date:'Mon 30/11',home:'G7A',  away:'G11A', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:[]}}},
+  {id:11,date:'Fri 27/11',home:'G10A', away:'G11A', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:[]}}},
+  {id:12,date:'Mon 30/11',home:'G12A', away:'G7A',  sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
   {id:13,date:'Tue 01/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Bronze',   scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
   {id:14,date:'Thu 03/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Final',    scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
 ];
@@ -855,9 +855,11 @@ function renderBracket(){
   out+=vline(sfX1+40, sf2My, sf2By);
   out+=hline(sfX1+40, sf2Mid, sfX2);
 
+  // Match dates for the bracket, taken from the match data
+  const mdDate=id=>{const m=MATCHES.find(x=>x.id===id);return m?m.date:'TBD';};
   // SF date boxes
-  out+=box(c1, r1+BH/2+BH/4, '27/11', 'Semi-final 1', true);
-  out+=box(c1, r3+BH/2+BH/4, '30/11', 'Semi-final 2', true);
+  out+=box(c1, r1+BH/2+BH/4, mdDate(11), 'Semi-final 1', true);
+  out+=box(c1, r3+BH/2+BH/4, mdDate(12), 'Semi-final 2', true);
 
   // Connectors SF -> Final
   const sfOut1=c1+BW, sfOut2=c2;
@@ -870,8 +872,8 @@ function renderBracket(){
 
   // Final + Bronze
   const fY=Math.round(finalMidY-BH/2);
-  out+=box(c2,fY,'03/12','Final',true);
-  out+=box(c2,fY+BH+16,'01/12','Bronze');
+  out+=box(c2,fY,mdDate(14),'Final',true);
+  out+=box(c2,fY+BH+16,mdDate(13),'Bronze');
 
   // Final -> Winner
   out+=hline(c2+BW, fY+BH/2, c3);
@@ -897,10 +899,10 @@ function renderBracket(){
     [[s[0],s[1],mid1],[s[2],s[3],mid2]].forEach(([ya,yb,m])=>{
       o+=hl(x0+W,ya+H/2,x0+W+13)+hl(x0+W,yb+H/2,x0+W+13)+vl(x0+W+13,ya+H/2,yb+H/2)+hl(x0+W+13,m,x1);
     });
-    o+=bx(x1,mid1-H/2,'27/11','Semi-final 1',true)+bx(x1,mid2-H/2,'30/11','Semi-final 2',true);
+    o+=bx(x1,mid1-H/2,mdDate(11),'Semi-final 1',true)+bx(x1,mid2-H/2,mdDate(12),'Semi-final 2',true);
     o+=hl(x1+W,mid1,x1+W+13)+hl(x1+W,mid2,x1+W+13)+vl(x1+W+13,mid1,mid2)+hl(x1+W+13,finalMid,x2);
-    o+=bx(x2,finalMid-H/2,'03/12','Final',true);
-    o+=bx(x2,finalMid+H/2+18,'01/12','Bronze Final');
+    o+=bx(x2,finalMid-H/2,mdDate(14),'Final',true);
+    o+=bx(x2,finalMid+H/2+18,mdDate(13),'Bronze Final');
     ms.innerHTML=o;
   }
 }
