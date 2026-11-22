@@ -178,6 +178,7 @@ tbody td:nth-child(2){text-align:left;font-weight:500}
 .boot-name{font-size:15px;font-weight:600}
 .boot-team{font-size:11px;color:var(--muted)}
 .boot-game{font-size:11px;color:var(--muted);line-height:1.5}
+.boot-note{font-size:12px;color:var(--muted);margin:10px 4px 0}
 .boot-g{font-size:20px;font-weight:900;color:var(--dark)}
 .boot-g span{font-size:10px;color:var(--muted);display:block;text-align:right}
 
@@ -387,6 +388,7 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
   <section id="golden-boot">
     <h2>Golden Boot</h2>
     <div class="card" style="padding:0;overflow:hidden" id="gb-list"></div>
+    <p class="boot-note">Ties are broken by goals scored against teams in the top 4, which count twice.</p>
   </section>
 
   <section id="photos">
@@ -925,23 +927,27 @@ function playerGames(p){
 
 function computeGoldenBoot(){
   const norm=s=>String(s).replace(/\s*\(p\)\s*$/i,'').trim();
+  const top4=new Set(STANDINGS.filter(r=>r.pos<=4).map(r=>r.team));
   const tally=new Map();
   MATCHES.forEach(m=>{
     if(!m.scorers) return;
-    [['h',m.home],['a',m.away]].forEach(([side,team])=>{
+    [['h',m.home,m.away],['a',m.away,m.home]].forEach(([side,team,opp])=>{
       (m.scorers[side]||[]).forEach(raw=>{
         const name=norm(raw);
         if(!name||/^o\.?g\.?$/i.test(name)) return;
         const key=name+'|'+team;
-        tally.set(key,(tally.get(key)||0)+1);
+        const t=tally.get(key)||{name,team,goals:0,vsTop4:0};
+        t.goals++; if(top4.has(opp)) t.vsTop4++;
+        tally.set(key,t);
       });
     });
   });
-  const list=[...tally].map(([k,goals])=>{const i=k.indexOf('|');return {name:k.slice(0,i),team:k.slice(i+1),goals};})
-    .sort((a,b)=>b.goals-a.goals);
+  // rank by goals; ties broken by goals against top-4 teams counted twice
+  const list=[...tally.values()].map(p=>({...p,tie:p.goals+p.vsTop4}))
+    .sort((a,b)=>b.goals-a.goals||b.tie-a.tie);
   // standard competition ranking, keeping every player in the top 10 places
   const out=[];let rank=0,prev=null;
-  list.forEach((p,i)=>{ if(p.goals!==prev){rank=i+1;prev=p.goals;} if(rank<=10) out.push({...p,rank,against:''}); });
+  list.forEach((p,i)=>{ const key=p.goals+'|'+p.tie; if(key!==prev){rank=i+1;prev=key;} if(rank<=10) out.push({...p,rank,against:''}); });
   return out;
 }
 
