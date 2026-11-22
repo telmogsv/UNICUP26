@@ -177,6 +177,7 @@ tbody td:nth-child(2){text-align:left;font-weight:500}
 .boot-info{flex:1}
 .boot-name{font-size:15px;font-weight:600}
 .boot-team{font-size:11px;color:var(--muted)}
+.boot-game{font-size:11px;color:var(--muted);line-height:1.5}
 .boot-g{font-size:20px;font-weight:900;color:var(--dark)}
 .boot-g span{font-size:10px;color:var(--muted);display:block;text-align:right}
 
@@ -907,13 +908,31 @@ function renderBracket(){
 // ════════════════════════════════════════════════════
 // RENDER — GOLDEN BOOT
 // ════════════════════════════════════════════════════
+function playerGames(p){
+  const norm=s=>String(s).replace(/\s*\(p\)\s*$/i,'').trim().toLowerCase();
+  const out=[];
+  MATCHES.forEach(m=>{
+    [['h',m.home,m.away],['a',m.away,m.home]].forEach(([side,team,opp])=>{
+      if(team!==p.team) return;
+      const n=(m.scorers&&m.scorers[side]||[]).filter(x=>norm(x)===norm(p.name)).length;
+      if(n>0) out.push({md:m.id,opp,n});
+    });
+  });
+  return out.sort((a,b)=>a.md-b.md);
+}
+
 function renderGoldenBoot(){
-  document.getElementById('gb-list').innerHTML=GOLDEN_BOOT.map(p=>`
+  document.getElementById('gb-list').innerHTML=GOLDEN_BOOT.map(p=>{
+    const games=playerGames(p);
+    const lines=games.length
+      ? games.map(g=>`<div class="boot-game">MD${g.md} · ${p.team} vs ${g.opp}${g.n>1?' · '+g.n+' goals':''}</div>`).join('')
+      : `<div class="boot-team">${p.team} · vs ${p.against}</div>`;
+    return `
     <div class="boot-row">
       <div class="boot-rank">${p.rank}</div>
-      <div class="boot-info"><div class="boot-name">${p.name}</div><div class="boot-team">${p.team} · vs ${p.against}</div></div>
+      <div class="boot-info"><div class="boot-name">${p.name}</div>${lines}</div>
       <div class="boot-g">${p.goals}<span>goal${p.goals!==1?'s':''}</span></div>
-    </div>`).join('');
+    </div>`;}).join('');
 }
 
 // ════════════════════════════════════════════════════
