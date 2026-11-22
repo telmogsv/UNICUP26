@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNICUP 26 — IST UNICEF Football Tournament</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -536,7 +538,7 @@ let MATCHES = [
   {id:11,date:'Fri 27/11',home:'G10A', away:'Staff', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
   {id:12,date:'Mon 30/11',home:'G7A',  away:'G11A', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:[]}}},
   {id:13,date:'Tue 01/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Bronze',   scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
-  {id:14,date:'Tue 01/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Final',    scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
+  {id:14,date:'Thu 03/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Final',    scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
 ];
 
 let GOLDEN_BOOT = [
@@ -867,7 +869,7 @@ function renderBracket(){
 
   // Final + Bronze
   const fY=Math.round(finalMidY-BH/2);
-  out+=box(c2,fY,'01/12','Final',true);
+  out+=box(c2,fY,'03/12','Final',true);
   out+=box(c2,fY+BH+16,'01/12','Bronze');
 
   // Final -> Winner
@@ -896,7 +898,7 @@ function renderBracket(){
     });
     o+=bx(x1,mid1-H/2,'27/11','Semi-final 1',true)+bx(x1,mid2-H/2,'30/11','Semi-final 2',true);
     o+=hl(x1+W,mid1,x1+W+13)+hl(x1+W,mid2,x1+W+13)+vl(x1+W+13,mid1,mid2)+hl(x1+W+13,finalMid,x2);
-    o+=bx(x2,finalMid-H/2,'01/12','Final',true);
+    o+=bx(x2,finalMid-H/2,'03/12','Final',true);
     o+=bx(x2,finalMid+H/2+18,'01/12','Bronze Final');
     ms.innerHTML=o;
   }
