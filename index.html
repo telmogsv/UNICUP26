@@ -951,7 +951,7 @@ function renderGoldenBoot(){
   document.getElementById('gb-list').innerHTML=board.map(p=>{
     const games=playerGames(p);
     const lines=games.length
-      ? games.map(g=>`<div class="boot-game">MD${g.md} · ${p.team} vs ${g.opp}· ${g.n} goal${g.n>1?'s':''}</div>`).join('')
+      ? games.map(g=>`<div class="boot-game">MD${g.md} · ${p.team} vs ${g.opp} · ${g.n} goal${g.n>1?'s':''}</div>`).join('')
       : `<div class="boot-team">${p.team} · vs ${p.against}</div>`;
     return `
     <div class="boot-row">
