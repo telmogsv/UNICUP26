@@ -692,7 +692,7 @@ function renderStandings(){
 // ════════════════════════════════════════════════════
 function groupScorers(arr){
   const counts={},order=[];
-  arr.forEach(n=>{if(!counts[n]){counts[n]=0;order.push(n);}counts[n]++;});
+  arr.map(n=>String(n).replace(/\s*\(p\)\s*$/i,'').trim()).forEach(n=>{if(!counts[n]){counts[n]=0;order.push(n);}counts[n]++;});
   return order.map(n=>counts[n]>1?n+' ×'+counts[n]:n);
 }
 function renderSchedule(){
@@ -923,8 +923,32 @@ function playerGames(p){
   return out.sort((a,b)=>a.md-b.md);
 }
 
+function computeGoldenBoot(){
+  const norm=s=>String(s).replace(/\s*\(p\)\s*$/i,'').trim();
+  const tally=new Map();
+  MATCHES.forEach(m=>{
+    if(!m.scorers) return;
+    [['h',m.home],['a',m.away]].forEach(([side,team])=>{
+      (m.scorers[side]||[]).forEach(raw=>{
+        const name=norm(raw);
+        if(!name||/^o\.?g\.?$/i.test(name)) return;
+        const key=name+'|'+team;
+        tally.set(key,(tally.get(key)||0)+1);
+      });
+    });
+  });
+  const list=[...tally].map(([k,goals])=>{const i=k.indexOf('|');return {name:k.slice(0,i),team:k.slice(i+1),goals};})
+    .sort((a,b)=>b.goals-a.goals);
+  // standard competition ranking, keeping every player in the top 10 places
+  const out=[];let rank=0,prev=null;
+  list.forEach((p,i)=>{ if(p.goals!==prev){rank=i+1;prev=p.goals;} if(rank<=10) out.push({...p,rank,against:''}); });
+  return out;
+}
+
 function renderGoldenBoot(){
-  document.getElementById('gb-list').innerHTML=GOLDEN_BOOT.map(p=>{
+  const board0=computeGoldenBoot();
+  const board=board0.length?board0:GOLDEN_BOOT;
+  document.getElementById('gb-list').innerHTML=board.map(p=>{
     const games=playerGames(p);
     const lines=games.length
       ? games.map(g=>`<div class="boot-game">MD${g.md} · ${p.team} vs ${g.opp}${g.n>1?' · '+g.n+' goals':''}</div>`).join('')
