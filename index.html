@@ -314,7 +314,7 @@ nav a:hover,nav a.active{color:var(--dark);border-bottom-color:var(--blue)}
 
 <main>
   <div class="schedule-notice" role="alert" style="margin:8px auto 0;max-width:900px;padding:12px 16px;border:2px solid #1CABE2;border-radius:10px;background:#fff;color:#0b3d5c;font-size:0.95rem;line-height:1.45;">
-    <strong>Schedule update:</strong> Tuesday 24/11's match was cancelled because of fires in the area. All remaining matches have moved to the next game day, and the Final has moved to Monday 07/12.
+    <strong>Schedule update:</strong> The matches on Thursday 26/11 and Friday 27/11 were cancelled because of fires in the area. All remaining matches have moved to the next game days (Monday, Tuesday, Thursday and Friday), and the Final has moved to Thursday 10/12.
   </div>
   <div id="page-loading" class="loading-msg">Loading tournament data...</div>
   <div id="view-scroll" class="view active">
@@ -538,13 +538,13 @@ let MATCHES = [
            a:{f:'3-3-2',gk:'Pablo',   rows:[['Africa','Ellias','Errol'],['Ollie','Marcos','Guillermo'],['Hugo','Niels']],bench:['Milan']}}},
   {id:6, date:'Tue 17/11',home:'G6A',  away:'G12A', sH:0,  sA:6,  played:true, stage:'2nd Round',scorers:{h:[],a:['Alejandro','Alejandro','Alejandro','Nikola','Nikola','German']},lineup:{h:{f:'3-2-3',gk:'Teo',rows:[['Lottie','Heoyang','Oscar'],['Pablo','Luca'],['Felipe','Pepe','Deniz']],bench:[]},a:{f:'3-3-2',gk:'Javier',rows:[[],[],[]],bench:[]}}},
   {id:7, date:'Thu 19/11',home:'G10A', away:'Staff', sH:2,sA:0,played:true,stage:'2nd Round',scorers:{h:['Marcos','Hugo'],a:[]},lineup:{h:{f:'3-3-2',gk:'Pablo',rows:[['Africa','Ellias','Errol'],['Ollie','Marcos','Guillermo'],['Hugo','Niels']],bench:[]},a:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]}}},
-  {id:8, date:'Thu 26/11',home:'G6B',  away:'G11A', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:['Benjamin']}}},
-  {id:9, date:'Fri 27/11',home:'G8A',  away:'G12B', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Miles',rows:[['Outa','Diego','Ayushman'],['Saul','Mugil','Aaron'],['Finley','Gaspard']],bench:[]},a:{f:'3-3-2',gk:'Evangeline',rows:[[],[],[]],bench:[]}}},
-  {id:10,date:'Mon 30/11',home:'G9A',  away:'G7A',  sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Gabriel',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
-  {id:11,date:'Tue 01/12',home:'G10A', away:'G11A', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:[]}}},
-  {id:12,date:'Thu 03/12',home:'G12A', away:'G7A',  sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
-  {id:13,date:'Fri 04/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Bronze',   scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
-  {id:14,date:'Mon 07/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Final',    scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
+  {id:8, date:'Mon 30/11',home:'G6B',  away:'G11A', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:['Benjamin']}}},
+  {id:9, date:'Tue 01/12',home:'G8A',  away:'G12B', sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Miles',rows:[['Outa','Diego','Ayushman'],['Saul','Mugil','Aaron'],['Finley','Gaspard']],bench:[]},a:{f:'3-3-2',gk:'Evangeline',rows:[[],[],[]],bench:[]}}},
+  {id:10,date:'Thu 03/12',home:'G9A',  away:'G7A',  sH:null,sA:null,played:false,stage:'2nd Round',scorers:{h:[],a:[]},lineup:{h:{f:'3-3-2',gk:'Gabriel',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
+  {id:11,date:'Fri 04/12',home:'G10A', away:'G11A', sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Pedro',rows:[['Maximos','Daniel','Alex O'],['Marco','Alex P'],['Lazar','Louis','Amina']],bench:[]}}},
+  {id:12,date:'Mon 07/12',home:'G12A', away:'G7A',  sH:null,sA:null,played:false,stage:'Semi-final',scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'3-2-3',gk:'Marc',rows:[['Julia','Leo','Otto'],['Manuel','Alonso'],['Paul','Sergio','Noah']],bench:[]}}},
+  {id:13,date:'Tue 08/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Bronze',   scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
+  {id:14,date:'Thu 10/12',home:'TBD',  away:'TBD',  sH:null,sA:null,played:false,stage:'Final',    scorers:{h:[],a:[]},lineup:{h:{f:'',gk:'',rows:[[],[],[]],bench:[]},a:{f:'',gk:'',rows:[[],[],[]],bench:[]}}},
 ];
 
 let GOLDEN_BOOT = [
