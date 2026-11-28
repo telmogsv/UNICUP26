@@ -126,7 +126,10 @@ tbody td:nth-child(2){text-align:left;font-weight:500}
 .team-name.away{text-align:right}
 .score-box{background:var(--dark);color:#fff;padding:3px 8px;border-radius:5px;font-weight:700;font-size:15px;min-width:50px;text-align:center}
 .score-box.pending{background:var(--muted);font-size:12px}
-.match-scorers{font-size:11px;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px solid var(--border)}
+.match-scorers{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:11px;color:var(--muted);margin-top:7px;padding-top:7px;border-top:1px solid var(--border)}
+.match-scorers-col{min-width:0;overflow-wrap:anywhere}
+.match-scorers-col.home{text-align:left}
+.match-scorers-col.away{text-align:right}
 
 /* MATCH DETAIL */
 #match-detail{display:none}
@@ -707,7 +710,10 @@ function renderSchedule(){
       ? `<div class="score-box">${m.sH} - ${m.sA}</div>`
       : `<div class="score-box pending">vs</div>`;
     const sc=m.played&&(m.scorers.h.length||m.scorers.a.length)
-      ? `<div class="match-scorers">${[...groupScorers(m.scorers.h).map(n=>n+' ('+m.home+')'),...groupScorers(m.scorers.a).map(n=>n+' ('+m.away+')')].join(' · ')}</div>`:'';
+      ? `<div class="match-scorers">
+        <div class="match-scorers-col home">${groupScorers(m.scorers.h).map(n=>`<div>${n}</div>`).join('')}</div>
+        <div class="match-scorers-col away">${groupScorers(m.scorers.a).map(n=>`<div>${n}</div>`).join('')}</div>
+      </div>`:'';
     return `<div class="match-card ${m.played?'played':'upcoming'}" data-id="${m.id}">
       <div class="match-meta">MD${m.id} · ${m.date}</div>
       <div class="match-teams">
